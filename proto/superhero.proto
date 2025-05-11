@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package superhero;
+
+// The gRPC service definition
+service SuperHeroService {
+  rpc SearchHero(SearchHeroRequest) returns (SearchHeroResponse);
+}
+
+// Request message containing the hero name
+message SearchHeroRequest {
+  string access_token = 1;
+  string name = 2;
+}
+
+// Response message containing the hero details
+message SearchHeroResponse {
+  repeated Hero heroes = 1;
+}
+
+// Hero message representing a single hero
+message Hero {
+  string id = 1;
+  string name = 2;
+  string powerstats = 3;
+  string biography = 4;
+  string appearance = 5;
+  string work = 6;
+  string connections = 7;
+  string image_url = 8;
+}
