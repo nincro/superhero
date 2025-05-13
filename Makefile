@@ -6,3 +6,6 @@ build_pb:
     --python_out=vendor \
     --grpc_python_out=vendor \
     proto/superhero.proto
+
+freeze:
+	pip freeze > requirements.txt
