@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-import superhero_pb2 as superhero__pb2
+from vendor import superhero_pb2 as superhero__pb2
 
 GRPC_GENERATED_VERSION = '1.71.0'
 GRPC_VERSION = grpc.__version__
@@ -40,6 +40,11 @@ class SuperHeroServiceStub(object):
                 request_serializer=superhero__pb2.SearchHeroRequest.SerializeToString,
                 response_deserializer=superhero__pb2.SearchHeroResponse.FromString,
                 _registered_method=True)
+        self.SubscribeUpdates = channel.unary_stream(
+                '/superhero.SuperHeroService/SubscribeUpdates',
+                request_serializer=superhero__pb2.SubscribeUpdatesRequest.SerializeToString,
+                response_deserializer=superhero__pb2.UpdateNotification.FromString,
+                _registered_method=True)
 
 
 class SuperHeroServiceServicer(object):
@@ -52,6 +57,12 @@ class SuperHeroServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def SubscribeUpdates(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_SuperHeroServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -59,6 +70,11 @@ def add_SuperHeroServiceServicer_to_server(servicer, server):
                     servicer.SearchHero,
                     request_deserializer=superhero__pb2.SearchHeroRequest.FromString,
                     response_serializer=superhero__pb2.SearchHeroResponse.SerializeToString,
+            ),
+            'SubscribeUpdates': grpc.unary_stream_rpc_method_handler(
+                    servicer.SubscribeUpdates,
+                    request_deserializer=superhero__pb2.SubscribeUpdatesRequest.FromString,
+                    response_serializer=superhero__pb2.UpdateNotification.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -89,6 +105,33 @@ class SuperHeroService(object):
             '/superhero.SuperHeroService/SearchHero',
             superhero__pb2.SearchHeroRequest.SerializeToString,
             superhero__pb2.SearchHeroResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SubscribeUpdates(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(
+            request,
+            target,
+            '/superhero.SuperHeroService/SubscribeUpdates',
+            superhero__pb2.SubscribeUpdatesRequest.SerializeToString,
+            superhero__pb2.UpdateNotification.FromString,
             options,
             channel_credentials,
             insecure,
