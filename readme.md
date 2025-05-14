@@ -45,7 +45,7 @@ Before running the server and client, ensure the following prerequisites are met
 2. **Run the Server**:
    Start the gRPC server by running:
    ```bash
-   python /Users/liminpeng/project/superhero/server/superhero_service.py
+   python <your-project-root>/server/superhero_service.py
    ```
 
 3. **Server Output**:
@@ -56,7 +56,7 @@ Before running the server and client, ensure the following prerequisites are met
 1. **Run the Client**:
    Start the client by running:
    ```bash
-   python /Users/liminpeng/project/superhero/client/superhero_client.py
+   python  <your-project-root>/client/superhero_client.py
    ```
 
 2. **Client Output**:
@@ -75,7 +75,7 @@ Before running the server and client, ensure the following prerequisites are met
 ## Project Structure
 
 ```
-/Users/liminpeng/project/superhero
+<your-project-root>
 ├── client/
 │   ├── superhero_client.py       # Client implementation
 ├── components/
