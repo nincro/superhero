@@ -14,7 +14,7 @@ class SuperHeroAPIClient:
     def get_updates(self):
         # Simulate fetching updates from the SuperHero API
         print("Fetching updates from the SuperHero API...")
-        # Example simulated updates with random changes
+        # Make some random changes
         updates = [
             {"id": "1", "name": "Batman", "powerstats": {"intelligence": random.randint(80, 100)}},
             {"id": "2", "name": "Superman", "powerstats": {"strength": random.randint(90, 100)}},

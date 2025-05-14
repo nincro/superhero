@@ -92,14 +92,17 @@ def poll_for_updates(api_client, cache, message_queue):
         time.sleep(10)  # Poll every 10 seconds
 
 if __name__ == "__main__":
-    load_dotenv()  # Load environment variables from .env
+
     api_client = SuperHeroAPIClient(base_url="https://superheroapi.com/api")
+    # Initial components
     cache = Cache(expiration_time=300)
     message_queue = MessageQueue(redis_host="localhost", redis_port=6379)  # Use Redis-backed queue
 
+    # Run modules
+    # Module for statistic of caching
     threading.Thread(target=log_cache_stats, args=(cache,), daemon=True).start()
 
-    # Start polling for updates in a background thread
+    # Module for polling the update from superheros server (mock)
     threading.Thread(target=poll_for_updates, args=(api_client, cache, message_queue), daemon=True).start()
 
     service = SuperHeroService(api_client=api_client, cache=cache)
