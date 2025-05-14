@@ -11,9 +11,10 @@ from vendor import superhero_pb2
 from vendor import superhero_pb2_grpc
 from components.message_queue import MessageQueue  # Import the Redis-backed MessageQueue
 
+
 class SuperHeroService(superhero_pb2_grpc.SuperHeroServiceServicer):
     def __init__(self, api_client, cache):
-        # Dependency injection for API client, cache, and message queue
+        # Dependency injection for API client, cache
         self.api_client = api_client
         self.cache = cache
 
@@ -57,6 +58,7 @@ class SuperHeroService(superhero_pb2_grpc.SuperHeroServiceServicer):
             context.set_code(grpc.StatusCode.INTERNAL)
             return superhero_pb2.SearchHeroResponse()
 
+
 def serve(service):
     print("Starting gRPC server...")
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
@@ -70,12 +72,14 @@ def serve(service):
     except KeyboardInterrupt:
         print("Server stopped")
 
+
 ##### Sub Modules #####
 def log_cache_stats(cache):
     while True:
         stats = cache.get_cache_stats()
         print(f"Cache Stats - Hits: {stats['hits']}, Misses: {stats['misses']}")
         time.sleep(5)
+
 
 def poll_for_updates(api_client, cache, message_queue):
     # Poll the SuperHero API for updates
@@ -91,8 +95,8 @@ def poll_for_updates(api_client, cache, message_queue):
             print(f"Error during polling: {e}")
         time.sleep(10)  # Poll every 10 seconds
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     api_client = SuperHeroAPIClient(base_url="https://superheroapi.com/api")
     # Initial components
     cache = Cache(expiration_time=300)

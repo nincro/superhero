@@ -1,6 +1,7 @@
 import time
 import random  # Import random module
 
+# TODO: Add a limitation for the capacity, and a data eviction algorithm(LRU) as well
 class Cache:
     def __init__(self, expiration_time=300):
         # expiration_time is in seconds

@@ -1,7 +1,8 @@
 import redis
 
 # Using Redis to make the message queue
-# Caution!! This one is just to simplify the implementation, if we need to support multiple client,
+# !!Caution!! This one is just to simplify the implementation,
+# if we need to support multiple client,
 # a professional MessageQueue component like Kafka would be a better choice.
 # Different client can subscribe the update from the topic in the kafka
 class MessageQueue:
