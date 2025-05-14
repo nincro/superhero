@@ -5,7 +5,7 @@ package superhero;
 // The gRPC service definition
 service SuperHeroService {
   rpc SearchHero(SearchHeroRequest) returns (SearchHeroResponse);
-  rpc SubscribeUpdates(SubscribeUpdatesRequest) returns (stream UpdateNotification);
+  rpc SubscribeUpdates(SubscribeUpdatesRequest) returns (stream UpdateNotification); // Changed to return a stream
 }
 
 // Request message containing the hero name
@@ -20,7 +20,9 @@ message SearchHeroResponse {
 }
 
 // Request message for subscribing to updates
-message SubscribeUpdatesRequest {}
+message SubscribeUpdatesRequest {
+  string access_token = 1;
+}
 
 // Notification message for updates
 message UpdateNotification {

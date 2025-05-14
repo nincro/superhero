@@ -3,20 +3,46 @@ import grpc
 import threading
 import time
 import requests
+import queue
 from dotenv import load_dotenv  # Import dotenv
 
 from cache import Cache
 from api_client import SuperHeroAPIClient
 from vendor import superhero_pb2
 from vendor import superhero_pb2_grpc
-from components.message_queue import MessageQueue  # Import the Redis-backed MessageQueue
 
 
 class SuperHeroService(superhero_pb2_grpc.SuperHeroServiceServicer):
     def __init__(self, api_client, cache):
-        # Dependency injection for API client, cache
+        # Dependency injection for API client and cache
         self.api_client = api_client
         self.cache = cache
+        self.subscribers = []  # List to store active subscribers
+
+    def SubscribeUpdates(self, request, context):
+        access_token = request.access_token
+
+        if not access_token:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details("Access token is required.")
+            return
+
+        # Add the subscriber to the list
+        subscriber_queue = queue.Queue()
+        self.subscribers.append(subscriber_queue)
+        print(f"New subscriber added for access token: {access_token}")
+
+        try:
+            while True:
+                # Stream updates to the client
+                update = subscriber_queue.get()
+                yield superhero_pb2.UpdateNotification(message=update)
+        except Exception as e:
+            print(f"Subscriber disconnected: {e}")
+        finally:
+            # Remove the subscriber when the stream ends
+            self.subscribers.remove(subscriber_queue)
+            print(f"Subscriber removed for access token: {access_token}")
 
     def SearchHero(self, request, context):
         access_token = request.access_token
@@ -81,7 +107,7 @@ def log_cache_stats(cache):
         time.sleep(5)
 
 
-def poll_for_updates(api_client, cache, message_queue):
+def poll_for_updates(api_client, cache, subscribers):
     # Poll the SuperHero API for updates
     while True:
         try:
@@ -89,8 +115,10 @@ def poll_for_updates(api_client, cache, message_queue):
             updates = api_client.get_updates()  # Fetch updates
             for update in updates:
                 cache.set(update["id"], update)  # Update the cache
-                message_queue.produce(str(update))  # Produce update to the Redis queue
-                print(f"Produced update for character: {update['name']}")
+                update_message = f"Update for character: {update['name']}"
+                for subscriber in subscribers:
+                    subscriber.put(update_message)  # Push update to all subscribers
+                    print(f"Broadcasted update: {update_message}")
         except Exception as e:
             print(f"Error during polling: {e}")
         time.sleep(10)  # Poll every 10 seconds
@@ -100,14 +128,15 @@ if __name__ == "__main__":
     api_client = SuperHeroAPIClient(base_url="https://superheroapi.com/api")
     # Initial components
     cache = Cache(expiration_time=300)
-    message_queue = MessageQueue(redis_host="localhost", redis_port=6379)  # Use Redis-backed queue
 
     # Run modules
     # Module for statistic of caching
     threading.Thread(target=log_cache_stats, args=(cache,), daemon=True).start()
 
     # Module for polling the update from superheros server (mock)
-    threading.Thread(target=poll_for_updates, args=(api_client, cache, message_queue), daemon=True).start()
-
     service = SuperHeroService(api_client=api_client, cache=cache)
+    threading.Thread(
+        target=poll_for_updates, args=(api_client, cache, service.subscribers), daemon=True
+    ).start()
+
     serve(service)

@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0fsuperhero.proto\x12\tsuperhero\"7\n\x11SearchHeroRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\"5\n\x12SearchHeroResponse\x12\x1f\n\x06heroes\x18\x01 \x03(\x0b\x32\x0f.superhero.Hero\"\x19\n\x17SubscribeUpdatesRequest\"%\n\x12UpdateNotification\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x91\x01\n\x04Hero\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x12\n\npowerstats\x18\x03 \x01(\t\x12\x11\n\tbiography\x18\x04 \x01(\t\x12\x12\n\nappearance\x18\x05 \x01(\t\x12\x0c\n\x04work\x18\x06 \x01(\t\x12\x13\n\x0b\x63onnections\x18\x07 \x01(\t\x12\x11\n\timage_url\x18\x08 \x01(\t2\xb6\x01\n\x10SuperHeroService\x12I\n\nSearchHero\x12\x1c.superhero.SearchHeroRequest\x1a\x1d.superhero.SearchHeroResponse\x12W\n\x10SubscribeUpdates\x12\".superhero.SubscribeUpdatesRequest\x1a\x1d.superhero.UpdateNotification0\x01\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0fsuperhero.proto\x12\tsuperhero\"7\n\x11SearchHeroRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\"5\n\x12SearchHeroResponse\x12\x1f\n\x06heroes\x18\x01 \x03(\x0b\x32\x0f.superhero.Hero\"/\n\x17SubscribeUpdatesRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\"%\n\x12UpdateNotification\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x91\x01\n\x04Hero\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x12\n\npowerstats\x18\x03 \x01(\t\x12\x11\n\tbiography\x18\x04 \x01(\t\x12\x12\n\nappearance\x18\x05 \x01(\t\x12\x0c\n\x04work\x18\x06 \x01(\t\x12\x13\n\x0b\x63onnections\x18\x07 \x01(\t\x12\x11\n\timage_url\x18\x08 \x01(\t2\xb6\x01\n\x10SuperHeroService\x12I\n\nSearchHero\x12\x1c.superhero.SearchHeroRequest\x1a\x1d.superhero.SearchHeroResponse\x12W\n\x10SubscribeUpdates\x12\".superhero.SubscribeUpdatesRequest\x1a\x1d.superhero.UpdateNotification0\x01\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -36,11 +36,11 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_SEARCHHERORESPONSE']._serialized_start=87
   _globals['_SEARCHHERORESPONSE']._serialized_end=140
   _globals['_SUBSCRIBEUPDATESREQUEST']._serialized_start=142
-  _globals['_SUBSCRIBEUPDATESREQUEST']._serialized_end=167
-  _globals['_UPDATENOTIFICATION']._serialized_start=169
-  _globals['_UPDATENOTIFICATION']._serialized_end=206
-  _globals['_HERO']._serialized_start=209
-  _globals['_HERO']._serialized_end=354
-  _globals['_SUPERHEROSERVICE']._serialized_start=357
-  _globals['_SUPERHEROSERVICE']._serialized_end=539
+  _globals['_SUBSCRIBEUPDATESREQUEST']._serialized_end=189
+  _globals['_UPDATENOTIFICATION']._serialized_start=191
+  _globals['_UPDATENOTIFICATION']._serialized_end=228
+  _globals['_HERO']._serialized_start=231
+  _globals['_HERO']._serialized_end=376
+  _globals['_SUPERHEROSERVICE']._serialized_start=379
+  _globals['_SUPERHEROSERVICE']._serialized_end=561
 # @@protoc_insertion_point(module_scope)

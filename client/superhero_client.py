@@ -3,15 +3,13 @@ import os
 from dotenv import load_dotenv
 from vendor import superhero_pb2
 from vendor import superhero_pb2_grpc
-from components.message_queue import MessageQueue  # Import the Redis-backed MessageQueue
 
-def subscribe_to_updates(message_queue):
+def subscribe_to_updates(stub, access_token):
     try:
-        while True:
-            update = message_queue.consume()  # Consume updates from the Redis queue
-            print(f"Update Notification: {update}")
-    except KeyboardInterrupt:
-        print("Stopped subscribing to updates.")
+        for update in stub.SubscribeUpdates(superhero_pb2.SubscribeUpdatesRequest(access_token=access_token)):
+            print(f"Update Notification: {update.message}")
+    except grpc.RpcError as e:
+        print(f"Error while subscribing to updates: {e.details()}")
 
 def run():
     load_dotenv()  # Load environment variables from .env
@@ -24,12 +22,9 @@ def run():
             print("Error: SUPERHERO_API_KEY environment variable is not set.")
             return
 
-        # Use the Redis-backed queue
-        message_queue = MessageQueue(redis_host="localhost", redis_port=6379)
-
         # Start a thread to listen for updates
         import threading
-        subscribe_thread = threading.Thread(target=subscribe_to_updates, args=(message_queue,), daemon=True)
+        subscribe_thread = threading.Thread(target=subscribe_to_updates, args=(stub, access_token), daemon=True)
         subscribe_thread.start()
 
         try:
