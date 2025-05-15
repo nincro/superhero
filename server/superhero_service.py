@@ -6,7 +6,7 @@ import requests
 import queue
 from dotenv import load_dotenv  # Import dotenv
 
-from cache import Cache
+from components.cache import SimpleCache as Cache
 from api_client import SuperHeroAPIClient
 from vendor import superhero_pb2
 from vendor import superhero_pb2_grpc
