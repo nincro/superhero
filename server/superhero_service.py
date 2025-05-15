@@ -61,6 +61,16 @@ class SuperHeroService(superhero_pb2_grpc.SuperHeroServiceServicer):
             data = self.api_client.search_hero(access_token, name)
 
             # Transform the REST API response to gRPC-compatible format
+            '''
+              string id = 1;
+              string name = 2;
+              string powerstats = 3;
+              string biography = 4;
+              string appearance = 5;
+              string work = 6;
+              string connections = 7;
+              string image_url = 8;
+            '''
             heroes = [
                 superhero_pb2.Hero(
                     id=hero["id"],
