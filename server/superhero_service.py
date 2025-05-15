@@ -33,14 +33,14 @@ class SuperHeroService(superhero_pb2_grpc.SuperHeroServiceServicer):
         print(f"New subscriber added for access token: {access_token}")
 
         try:
+            # Start to poll the update
             while True:
-                # Stream updates to the client
                 update = subscriber_queue.get()
                 yield superhero_pb2.UpdateNotification(message=update)
         except Exception as e:
             print(f"Subscriber disconnected: {e}")
         finally:
-            # Remove the subscriber when the stream ends
+            # Remove the subscriber when the client exits or something
             self.subscribers.remove(subscriber_queue)
             print(f"Subscriber removed for access token: {access_token}")
 
